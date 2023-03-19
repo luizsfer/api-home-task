@@ -13,6 +13,8 @@ This is a simple FastAPI app that allows users to store their date of birth and 
     - [`POST /hello/{username}`](#post-hellousername)
     - [User Model](#user-model)
   - [Project Structure](#project-structure)
+  - [Infrastructure](#infrastructure)
+    - [Provisioned Resources](#provisioned-resources)
   - [Installation](#installation)
   - [How to Run Locally](#how-to-run-locally)
   - [Tech Stack and Tools](#tech-stack-and-tools)
@@ -112,6 +114,18 @@ infra
 - infra/outputs.tf
 Makefile
 ```
+
+## Infrastructure
+
+The infrastructure for this project was built using Terraform to provision resources on AWS. The project consists of an API Gateway and a Lambda function that interacts with a DynamoDB table.
+
+### Provisioned Resources
+
+`**API Gateway**`: The API Gateway was set up using the HTTP API type. The API has two routes, GET /hello/{username} and POST /hello/{username}, which are integrated with the Lambda function.
+
+`**Lambda Function**`: The Lambda function is responsible for processing API requests and interacting with the DynamoDB table. It has been configured with the necessary permissions to access the DynamoDB table and has a basic AWS Lambda execution policy.
+
+`**DynamoDB**`: A DynamoDB table is used as the database to store and manage user data. The Lambda function has permission to perform operations such as GetItem, PutItem, UpdateItem, and DeleteItem on the table.
 
 ## Installation
 
@@ -257,11 +271,14 @@ Keep in mind that this estimation ignores the AWS Free Tier and is based on assu
 
 ## Resources
 
-- FastAPI documentation
-- Boto3 documentation
-- Pytest documentation
-- AWS CLI documentation
-- Terraform documentation
+- [FastAPI documentation](https://fastapi.tiangolo.com/)
+- [Boto3 documentation](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html)
+- [Pytest documentation](https://docs.pytest.org/en/latest/)
+- [AWS CLI documentation](https://awscli.amazonaws.com/v2/documentation/api/latest/index.html)
+- [Terraform documentation](https://www.terraform.io/docs/)
+- [Mangum documentation](https://mangum.io/)
+- [Unittest documentation](https://docs.python.org/3/library/unittest.html)
+- [Mock documentation](https://docs.python.org/3/library/unittest.mock.html)
 
 ## Closing Thoughts
 
