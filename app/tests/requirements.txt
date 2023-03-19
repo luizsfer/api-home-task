@@ -1,0 +1,8 @@
+fastapi
+pydantic
+redis
+pytest
+pytest-mock
+httpx
+mangum
+moto[dynamodb]
