@@ -33,7 +33,7 @@ This is a simple FastAPI app that allows users to store their date of birth and 
 
 The app is designed with a serverless architecture using AWS Lambda, API Gateway, and DynamoDB. The following diagram shows the high-level architecture of the app.
 
-[image]
+![diagram](https://user-images.githubusercontent.com/40238944/226215614-edcf0201-ccfe-4d73-96ed-018369701c96.jpg)
 
 - API Gateway receives incoming HTTP requests and routes them to the corresponding Lambda function.
 - The Lambda function processes the request, interacting with DynamoDB to store or retrieve user data.
