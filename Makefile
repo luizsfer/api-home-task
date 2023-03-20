@@ -1,7 +1,7 @@
 .PHONY: install
 install:
-	pip install -r app/requirements.txt
-	pip install -r app/tests/requirements.txt
+	pip3 install -r app/requirements.txt
+	pip3 install -r app/tests/requirements.txt
 
 .PHONY: build
 build: clean

@@ -27,7 +27,7 @@ module "s3_bucket" {
 
 module "cloudwatch_log_group" {
   source         = "./modules/cloudwatch"
-  log_group_name = "revolut-lambda"
+  log_group_name = "api-lambda"
 }
 
 module "api_gateway" {
@@ -38,12 +38,12 @@ module "api_gateway" {
 
 module "lambda" {
   source               = "./modules/lambda"
-  lambda_function_name = "revolut-lambda"
+  lambda_function_name = "api-lambda"
   lambda_s3_bucket     = module.s3_bucket.bucket_id
   lambda_s3_key        = "lambda.zip"
   lambda_handler       = "app.handler"
   lambda_runtime       = "python3.8"
-  lambda_role_name     = "revolut-lambda-role"
+  lambda_role_name     = "api-lambda-role"
   lambda_timeout       = 30
   environment_variables = {
     DYNAMODB_TABLE_NAME = local.dynamodb_table_name

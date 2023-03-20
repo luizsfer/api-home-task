@@ -20,9 +20,7 @@ BASE_PATH = "/" + os.environ.get('BASE_PATH', '')
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(root_path="/user_api")
-
-logging.warning(BASE_PATH)
+app = FastAPI(root_path=BASE_PATH)
 
 # Configure the DynamoDB client
 table_name = os.environ.get("DYNAMODB_TABLE_NAME", "table")
@@ -48,20 +46,23 @@ class User(BaseModel):
 
 @app.get("/hello/{username}")
 async def read_hello(username: str):
-    logging.warning("This is a warning in get")
     logger.info("GET /hello/%s", username)
 
     table = get_table()
     try:
         response = table.get_item(Key={'username': username})
     except ClientError as error:
-        logger.exception("DynamoDB error")
+        logger.exception("DynamoDB error while getting item: %s", error)
         raise HTTPException(
-            status_code=500, detail="Internal Server Error") from error
+            status_code=500,
+            detail="Internal Server Error") from error
 
     if 'Item' not in response:
         logger.warning("User %s not found", username)
-        raise HTTPException(status_code=404, detail='User not found')
+        raise HTTPException(
+            status_code=404,
+            detail=f"User not found for username: {username}"
+        )
 
     birthday = datetime.strptime(
         response['Item']['dateOfBirth'], '%Y-%m-%d').date()
@@ -89,22 +90,23 @@ async def post_hello(username: str, dateOfBirth: User):
         logger.warning("Invalid username: %s", username)
         raise HTTPException(
             status_code=400,
-            detail="Username must be alphabetic"
+            detail=f"Invalid username: {username}. Username must be alphabetic."
         )
 
     table = get_table()
     try:
         response = table.get_item(Key={'username': username})
     except Exception as error:
-        logger.exception("DynamoDB error")
+        logger.exception("DynamoDB error while getting item: %s", error)
         raise HTTPException(
-            status_code=500, detail="Internal Server Error") from error
+            status_code=500,
+            detail="Internal Server Error") from error
 
     if 'Item' in response:
         logger.warning("User %s already exists", username)
         raise HTTPException(
             status_code=409,
-            detail="User already exists"
+            detail=f"User already exists for username: {username}"
         )
 
     try:
@@ -114,11 +116,11 @@ async def post_hello(username: str, dateOfBirth: User):
                 'dateOfBirth': dateOfBirth.dateOfBirth.isoformat()
             })
         )
-    except Exception as error:
-        logger.exception("DynamoDB error")
+    except ClientError as error:
+        logger.exception("DynamoDB error while putting item: %s", error)
         raise HTTPException(
             status_code=500,
-            detail="Internal Server Error"
+            detail=f"Internal Server Error while creating user: {username}"
         ) from error
 
     return None

@@ -143,7 +143,7 @@ Before you start, make sure you have the following tools installed:
 
 ```bash
 git clone https://github.com/luizsfer/api-home-task.git
-cd revolut-home-task
+cd api-home-task
   ```
 
 2. Install the required packages:

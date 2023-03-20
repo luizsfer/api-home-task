@@ -45,11 +45,10 @@ def test_create_user(dynamodb_mock):
     assert response.status_code == 204
     assert table_mock.put_item.call_count == 1
 
-
 def test_create_user_dynamodb_error(dynamodb_mock):
     table_mock = dynamodb_mock
     table_mock.table_status = 'ACTIVE'
-    table_mock.put_item.side_effect = Exception('DynamoDB error')
+    table_mock.get_item.side_effect = Exception('DynamoDB error')
 
     response = client.post("/hello/john", json={"dateOfBirth": "2000-01-01"})
 
