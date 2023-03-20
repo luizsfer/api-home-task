@@ -42,16 +42,16 @@ resource "aws_apigatewayv2_route" "route_user_api_get" {
   target    = "integrations/${aws_apigatewayv2_integration.user_api_get.id}"
 }
 
-resource "aws_apigatewayv2_integration" "user_api_post" {
+resource "aws_apigatewayv2_integration" "user_api_put" {
   api_id           = aws_apigatewayv2_api.user_api.id
   integration_type = "AWS_PROXY"
-  integration_method = "POST"
+  integration_method = "PUT"
   integration_uri  = var.lambda_integration_uri
 
 }
 
-resource "aws_apigatewayv2_route" "route_user_api_post" {
+resource "aws_apigatewayv2_route" "route_user_api_put" {
   api_id    = aws_apigatewayv2_api.user_api.id
-  route_key = "POST /hello/{username}"
-  target    = "integrations/${aws_apigatewayv2_integration.user_api_post.id}"
+  route_key = "PUT /hello/{username}"
+  target    = "integrations/${aws_apigatewayv2_integration.user_api_put.id}"
 }

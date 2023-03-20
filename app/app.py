@@ -82,9 +82,9 @@ async def read_hello(username: str):
     return {"message": message}
 
 
-@app.post("/hello/{username}", status_code=204)
-async def post_hello(username: str, dateOfBirth: User):
-    logger.info("POST /hello/%s", username)
+@app.put("/hello/{username}", status_code=204)
+async def put_hello(username: str, dateOfBirth: User):
+    logger.info("PUT /hello/%s", username)
 
     if not username.isalpha():
         logger.warning("Invalid username: %s", username)

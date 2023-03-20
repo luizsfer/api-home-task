@@ -40,7 +40,7 @@ def test_create_user(dynamodb_mock):
     table_mock.get_item.return_value = {}
     table_mock.table_status = 'ACTIVE'
 
-    response = client.post("/hello/john", json={"dateOfBirth": "2000-01-01"})
+    response = client.put("/hello/john", json={"dateOfBirth": "2000-01-01"})
 
     assert response.status_code == 204
     assert table_mock.put_item.call_count == 1
@@ -50,7 +50,7 @@ def test_create_user_dynamodb_error(dynamodb_mock):
     table_mock.table_status = 'ACTIVE'
     table_mock.get_item.side_effect = Exception('DynamoDB error')
 
-    response = client.post("/hello/john", json={"dateOfBirth": "2000-01-01"})
+    response = client.put("/hello/john", json={"dateOfBirth": "2000-01-01"})
 
     assert response.status_code == 500
     assert response.json() == {'detail': 'Internal Server Error'}
@@ -75,7 +75,7 @@ def test_valid_date_of_birth():
 
 
 def test_hello_username_not_alpha():
-    response = client.post("/hello/123", json={"dateOfBirth": "2000-01-01"})
+    response = client.put("/hello/123", json={"dateOfBirth": "2000-01-01"})
     assert response.status_code == 400
 
 
@@ -88,7 +88,7 @@ def test_hello_username_already_exists(dynamodb_mock):
         }
     }
 
-    response = client.post("/hello/john", json={"dateOfBirth": "2000-01-01"})
+    response = client.put("/hello/john", json={"dateOfBirth": "2000-01-01"})
 
     assert response.status_code == 409
 
@@ -97,6 +97,6 @@ def test_hello_username_internal_server_error(dynamodb_mock):
     table_mock = dynamodb_mock
     table_mock.get_item.side_effect = Exception()
 
-    response = client.post("/hello/john", json={"dateOfBirth": "2000-01-01"})
+    response = client.put("/hello/john", json={"dateOfBirth": "2000-01-01"})
 
     assert response.status_code == 500
