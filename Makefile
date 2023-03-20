@@ -31,4 +31,4 @@ clean:
 .PHONY: add-user
 add-user:
 	@echo "Adding user..."
-	@curl -X PUT -H "Content-Type: application/json" -d '{"dateOfBirth": "1990-12-13"}' $(shell cd infra && terraform output -raw api_endpoint)/hello/username
+	@curl -X PUT -H "Content-Type: application/json" -d '{"dateOfBirth": "1990-11-13"}' $(shell cd infra && terraform output -raw api_endpoint)/hello/username

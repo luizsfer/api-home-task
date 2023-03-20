@@ -45,16 +45,6 @@ def test_create_user(dynamodb_mock):
     assert response.status_code == 204
     assert table_mock.put_item.call_count == 1
 
-def test_create_user_dynamodb_error(dynamodb_mock):
-    table_mock = dynamodb_mock
-    table_mock.table_status = 'ACTIVE'
-    table_mock.get_item.side_effect = Exception('DynamoDB error')
-
-    response = client.put("/hello/john", json={"dateOfBirth": "2000-01-01"})
-
-    assert response.status_code == 500
-    assert response.json() == {'detail': 'Internal Server Error'}
-
 
 @pytest.mark.parametrize("invalid_date", [
     "3000-01-01",  # data futura
@@ -77,26 +67,3 @@ def test_valid_date_of_birth():
 def test_hello_username_not_alpha():
     response = client.put("/hello/123", json={"dateOfBirth": "2000-01-01"})
     assert response.status_code == 400
-
-
-def test_hello_username_already_exists(dynamodb_mock):
-    table_mock = dynamodb_mock
-    table_mock.get_item.return_value = {
-        'Item': {
-            'username': 'john',
-            'dateOfBirth': '2000-01-01'
-        }
-    }
-
-    response = client.put("/hello/john", json={"dateOfBirth": "2000-01-01"})
-
-    assert response.status_code == 409
-
-
-def test_hello_username_internal_server_error(dynamodb_mock):
-    table_mock = dynamodb_mock
-    table_mock.get_item.side_effect = Exception()
-
-    response = client.put("/hello/john", json={"dateOfBirth": "2000-01-01"})
-
-    assert response.status_code == 500

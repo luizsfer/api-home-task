@@ -94,20 +94,20 @@ async def put_hello(username: str, dateOfBirth: User):
         )
 
     table = get_table()
-    try:
-        response = table.get_item(Key={'username': username})
-    except Exception as error:
-        logger.exception("DynamoDB error while getting item: %s", error)
-        raise HTTPException(
-            status_code=500,
-            detail="Internal Server Error") from error
+    # try:
+    #     response = table.get_item(Key={'username': username})
+    # except Exception as error:
+    #     logger.exception("DynamoDB error while getting item: %s", error)
+    #     raise HTTPException(
+    #         status_code=500,
+    #         detail="Internal Server Error") from error
 
-    if 'Item' in response:
-        logger.warning("User %s already exists", username)
-        raise HTTPException(
-            status_code=409,
-            detail=f"User already exists for username: {username}"
-        )
+    # if 'Item' in response:
+    #     logger.warning("User %s already exists", username)
+    #     raise HTTPException(
+    #         status_code=409,
+    #         detail=f"User already exists for username: {username}"
+    #     )
 
     try:
         table.put_item(

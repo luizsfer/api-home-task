@@ -198,11 +198,8 @@ The tests for the app are located in the app/tests directory and can be run usin
 
 - Getting a user's birthday message
 - Creating a new user
-- Handling DynamoDB errors
 - Validating date of birth input
 - Handling invalid usernames
-- Handling duplicate usernames
-- Handling internal server errors
 
 To run the tests, simply execute the following command:
 ```bash
